@@ -1,6 +1,6 @@
 import { QueryResult } from "pg";
 
- interface IMovie {
+interface IMovie {
   id: number;
   name: string;
   category: string;
@@ -8,8 +8,8 @@ import { QueryResult } from "pg";
   price: number;
 }
 
-type MovieRequest=Omit<IMovie,"id">
+type MovieRequest = Omit<IMovie, "id">;
 
-type MovieResult=QueryResult<IMovie>
+type MovieResult = QueryResult<IMovie>;
 
-export{IMovie, MovieRequest,MovieResult}
+export { IMovie, MovieRequest, MovieResult };
