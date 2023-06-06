@@ -22,7 +22,7 @@ app.delete("/movies/:id", deleteMovie);
 
 const onlineMsg: string = "server online";
 
-app.listen(3000, async () => {
+app.listen(process.env.PORT, async () => {
   await connectDataBase();
   console.log(onlineMsg);
 });
