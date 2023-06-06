@@ -1,14 +1,13 @@
 import { Client } from "pg";
 import "dotenv/config";
 
-console.log(process.env.DB_USER);
 
 const client = new Client({
-  user: "3490",
-  password: "1256",
-  host: "localhost",
-  database: "movies",
-  port: 5432,
+  user: process.env.DB_USER,
+  password:process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  database:process.env.DB,
+  port:Number(process.env.DB_PORT),
 });
 
 const connectDataBase = async (): Promise<void> => {
