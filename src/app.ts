@@ -13,11 +13,11 @@ import middlewares from "./middlewares";
 const app: Application = express();
 app.use(json());
 
-app.post("/movies", addMovie);
+app.post("/movies", middlewares.nameExistance, addMovie);
 app.use("/movies/:id", middlewares.IdExistance);
 app.get("/movies", getAllMovies);
 app.get("/movies/:id", getMovieById);
-app.patch("/movies/:id", editMovie);
+app.patch("/movies/:id", middlewares.nameExistance, editMovie);
 app.delete("/movies/:id", deleteMovie);
 
 const onlineMsg: string = "server online";

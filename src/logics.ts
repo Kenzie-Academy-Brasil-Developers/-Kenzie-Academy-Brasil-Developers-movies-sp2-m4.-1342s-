@@ -12,7 +12,7 @@ const addMovie = async (req: Request, res: Response): Promise<Response> => {
     Object.values(body)
   );
   const queryResult: MovieResult = await client.query(query);
-  return res.status(201).json(queryResult.rows);
+  return res.status(201).json(queryResult.rows[0]);
 };
 
 const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
@@ -22,6 +22,12 @@ const getAllMovies = async (req: Request, res: Response): Promise<Response> => {
       "SELECT * FROM movies WHERE category=$1;",
       [category]
     );
+    if (!queryResult.rows[0]) {
+      const query: string = "SELECT * FROM movies;";
+      const queryResultAll: MovieResult = await client.query(query);
+
+      return res.status(200).json(queryResultAll.rows);
+    }
     return res.status(200).json(queryResult.rows);
   }
   const query: string = "SELECT * FROM movies;";
@@ -34,11 +40,15 @@ const getMovieById = async (req: Request, res: Response): Promise<Response> => {
 };
 
 const editMovie = async (req: Request, res: Response): Promise<Response> => {
-  const query: string = format(
+    const query: string = format(
     "UPDATE movies SET (%I)=ROW(%L)WHERE id=$1 RETURNING *;",
     Object.keys(req.body),
     Object.values(req.body)
   );
+  const QueryConfig = {
+    text: query,
+    values: [req.params.id],
+  };
 
   const queryResult: MovieResult = await client.query(query, [req.params.id]);
 
